@@ -1,4 +1,3 @@
-import React from 'react';
 import { HAMBURGER_MENU_URL, YOUTUBE_LOGO_URL, USER_PROFILE_URL } from '../utils/constants';
 import { useDispatch } from 'react-redux';
 import {toggleHamburgerMenu} from '../utils/appSlice';

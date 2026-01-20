@@ -9,10 +9,14 @@ const appSlice = createSlice({
 
         toggleHamburgerMenu: (state) => {
             state.isHamburgerMenuOpen = !state.isHamburgerMenuOpen;
+        },
+
+        closeHamburgerMenu: (state) => {
+            state.isHamburgerMenuOpen = false;
         }
     }
 });
 
-export const {toggleHamburgerMenu} = appSlice.actions;
+export const {toggleHamburgerMenu, closeHamburgerMenu} = appSlice.actions;
 
 export default appSlice.reducer;
