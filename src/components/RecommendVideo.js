@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 const RecommendVideo = ({ data }) => {
     const navigate = useNavigate();
-    const { id, snippet,statistics } = data;
+    const { id, snippet, statistics } = data;
     const { videoId } = id;
 
     return (

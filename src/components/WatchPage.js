@@ -8,10 +8,13 @@ import RecommendVideo from "./RecommendVideo";
 
 const WatchPage = () => {
     const [seacrhParams] = useSearchParams();
+
     const [videoData, setVideoData] = useState(null);
     const [recommendVideoData, setRecommendVideoData] = useState([]);
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+
     const videoId = seacrhParams.get("v");
 
     useEffect(() => {
@@ -54,6 +57,7 @@ const WatchPage = () => {
     return (
         <div className="px-5 py-3">
             <div className="flex gap-6">
+                {/* LEFT SIDE */}
                 <div className="w-[70%]">
                     <iframe className="w-full rounded-xl"
                         height="420"

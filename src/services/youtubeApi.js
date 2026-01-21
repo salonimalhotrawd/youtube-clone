@@ -25,7 +25,7 @@ export const fetchAllCommentsById = async (videoId) => {
 };
 
 
-export const fetchRecommendVideosList = async(title) => {
+export const fetchRecommendVideosList = async (title) => {
     const url = YOUTUBE_RECOMMENDED_BY_TITLE + encodeURIComponent(title) + "&key=" + YOUTUBE_API_KEY;
     const response = await fetch(url);
     if (!response.ok) throw new Error("Failed to fetch Recommend Videos");
