@@ -39,5 +39,6 @@ export const GET_YOUTUBE_VIDEO_API_BY_ID_URL = "https://youtube.googleapis.com/y
 
 export const GET_ALL_COMMENTS_ON_VIDEO_BY_ID = "https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet%2Creplies&videoId=";
 
+export const YOUTUBE_RECOMMENDED_BY_TITLE = "https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=15&type=video&q=";
 
 

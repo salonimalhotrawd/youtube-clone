@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { CHANNEL_LOGO_URL } from "../utils/uiConstants";
-import { fetchVideoById } from "../services/youtubeApi";
+import { fetchRecommendVideosList, fetchVideoById } from "../services/youtubeApi";
 import ErrorHandler from "./ErrorHandler";
 import ShimmerWatchPage from "./ShimmerWatchPage";
+import RecommendVideo from "./RecommendVideo";
 
 const WatchPage = () => {
     const [seacrhParams] = useSearchParams();
     const [videoData, setVideoData] = useState(null);
+    const [recommendVideoData, setRecommendVideoData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const videoId = seacrhParams.get("v");
@@ -17,11 +19,26 @@ const WatchPage = () => {
         getVideoDataById();
     }, [videoId]);
 
+
     const getVideoDataById = async () => {
         try {
             setLoading(true);
             const response = await fetchVideoById(videoId);
             setVideoData(response?.items[0]);
+            getRecommendVideos(response?.items[0]?.snippet?.title);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const getRecommendVideos = async (snippet) => {
+        try {
+            setLoading(true);
+            const response = await fetchRecommendVideosList(snippet);
+            const filter = response?.items?.filter(item => item?.id?.videoId !== videoId);
+            setRecommendVideoData(filter);
         } catch (err) {
             setError(err.message);
         } finally {
@@ -34,7 +51,6 @@ const WatchPage = () => {
 
 
     const { snippet, statistics } = videoData;
-
     return (
         <div className="px-5 py-3">
             <div className="flex gap-6">
@@ -94,25 +110,9 @@ const WatchPage = () => {
                 {/* RIGHT SIDE */}
                 <div className="w-[30%]">
                     <div className="font-semibold mb-3">Recommended</div>
-
-                    {/* Placeholder cards (only UI) */}
                     <div className="space-y-3">
-                        {[1, 2, 3, 4, 5].map((x) => (
-                            <div key={x} className="flex gap-3 p-2 rounded-xl hover:bg-gray-100 cursor-pointer">
-                                <div className="w-40 h-24 bg-gray-200 rounded-xl"></div>
-
-                                <div className="flex-1">
-                                    <div className="font-semibold text-sm line-clamp-2">
-                                        Video title placeholder {x}
-                                    </div>
-                                    <div className="text-xs text-gray-500 mt-1">
-                                        Channel Name
-                                    </div>
-                                    <div className="text-xs text-gray-500">
-                                        120K views • 2 days ago
-                                    </div>
-                                </div>
-                            </div>
+                        {recommendVideoData?.map((rcvd) => (
+                            <RecommendVideo key={rcvd?.id?.videoId} data={rcvd} />
                         ))}
                     </div>
                 </div>
