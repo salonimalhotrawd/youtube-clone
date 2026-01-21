@@ -1,13 +1,19 @@
 
-const VideoCard = ({data}) => {
-    const {id, snippet} = data;
-    const {thumbnails, description, publishedAt, localized, channelTitle,title} = snippet;
+const VideoCard = ({ data }) => {
+    const { id, snippet } = data;
+    const { thumbnails, description, publishedAt, localized, channelTitle, title } = snippet;
     return (
-        <div className="p-2 m-4 w-60 cursor-pointer rounded-2xl shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:scale-[1.02]">
-            <img className="rounded-lg" src={thumbnails?.high?.url} alt={channelTitle}/>
-            <ul>
-                <li className="font-bold">{title}</li>
-                <li>{channelTitle}</li>
+        <div className="w-80 p-2 cursor-pointer 
+                 rounded-2xl shadow-lg 
+                 transition-all duration-300 
+                 hover:-translate-y-1 hover:shadow-xl">
+            <div className="w-full aspect-video rounded-lg overflow-hidden">
+                <img className="w-full h-full object-cover" src={thumbnails?.high?.url} alt={channelTitle} />
+            </div>
+
+            <ul className="mt-2 space-y-1">
+                <li className="font-bold text-sm line-clamp-2">{title}</li>
+                <li className="text-gray-600 text-sm line-clamp-1">{channelTitle}</li>
             </ul>
         </div>
     )

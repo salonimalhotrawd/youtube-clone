@@ -1,48 +1,122 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from 'react-redux';
-import { closeHamburgerMenu } from "../utils/appSlice";
 import { useSearchParams } from "react-router-dom";
-import { GET_YOUTUBE_VIDEO_API_BY_ID_URL, YOUTUBE_API_KEY, GET_ALL_COMMENTS_ON_VIDEO_BY_ID } from "../utils/constants";
-
+import { CHANNEL_LOGO_URL } from "../utils/uiConstants";
+import { fetchVideoById } from "../services/youtubeApi";
+import ErrorHandler from "./ErrorHandler";
+import ShimmerWatchPage from "./ShimmerWatchPage";
 
 const WatchPage = () => {
-    const dispatchStore = useDispatch();
     const [seacrhParams] = useSearchParams();
-    const [videoData, setVideoData] = useState([]);
+    const [videoData, setVideoData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+    const videoId = seacrhParams.get("v");
 
     useEffect(() => {
-        dispatchStore(closeHamburgerMenu());
+        if (!videoId) return null;
         getVideoDataById();
-        getAllCommentsById();
-    }, []);
+    }, [videoId]);
 
     const getVideoDataById = async () => {
-        const id = seacrhParams.get("v");
-        const APIURL = GET_YOUTUBE_VIDEO_API_BY_ID_URL + id + "&key=" + YOUTUBE_API_KEY;
-        const response = await fetch(APIURL);
-        const json = await response.json();
-        setVideoData(json?.items[0]);
+        try {
+            setLoading(true);
+            const response = await fetchVideoById(videoId);
+            setVideoData(response?.items[0]);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
-    const getAllCommentsById = async () => {
-        const id = seacrhParams.get("v");
-        const APIURL = GET_ALL_COMMENTS_ON_VIDEO_BY_ID + id + "&key=" + YOUTUBE_API_KEY;
-        const commentsData = await fetch(APIURL);
-        const commentsJSON = await commentsData.json();
-    }
+    if (loading) return <div className="p-5"><ShimmerWatchPage /></div>;
+    if (error) return <ErrorHandler errorMessage={error} />;
+
 
     const { snippet, statistics } = videoData;
 
     return (
-        <div className="px-5 m-2">
-            <iframe width="800" height="400"
-                src={"https://www.youtube.com/embed/" + seacrhParams.get("v")}
-                title="YouTube video player" frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; 
-            gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen></iframe>
-            <div className="font-bold mt-2">{snippet?.title}</div>
+        <div className="px-5 py-3">
+            <div className="flex gap-6">
+                <div className="w-[70%]">
+                    <iframe className="w-full rounded-xl"
+                        height="420"
+                        src={"https://www.youtube.com/embed/" + videoId}
+                        title="YouTube video player"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerPolicy="strict-origin-when-cross-origin"
+                        allowFullScreen
+                    ></iframe>
+
+                    <div className="font-bold text-lg mt-3">
+                        {snippet?.title}
+                    </div>
+
+                    <div className="flex items-center justify-between mt-3">
+
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden">
+                                <img className="w-full h-full object-cover" src={CHANNEL_LOGO_URL} alt={snippet?.channelTitle} />
+                            </div>
+
+                            <div>
+                                <div className="font-semibold text-sm">{snippet?.channelTitle}</div>
+                                <div className="text-xs text-gray-500">
+                                    {Number(statistics?.viewCount || 0).toLocaleString()} views •{" "}
+                                    {new Date(snippet?.publishedAt).toDateString()}
+                                </div>
+                            </div>
+
+                            <button className="ml-4 bg-black text-white px-4 py-2 rounded-full text-sm">
+                                Subscribe
+                            </button>
+                        </div>
+
+                        <div className="flex gap-2">
+                            <button className="bg-gray-100 px-4 py-2 rounded-full text-sm">
+                                👍 {Number(statistics?.likeCount || 0).toLocaleString()}
+                            </button>
+
+                            <button className="bg-gray-100 px-4 py-2 rounded-full text-sm">
+                                Share
+                            </button>
+
+                            <button className="bg-gray-100 px-4 py-2 rounded-full text-sm">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                {/* RIGHT SIDE */}
+                <div className="w-[30%]">
+                    <div className="font-semibold mb-3">Recommended</div>
+
+                    {/* Placeholder cards (only UI) */}
+                    <div className="space-y-3">
+                        {[1, 2, 3, 4, 5].map((x) => (
+                            <div key={x} className="flex gap-3 p-2 rounded-xl hover:bg-gray-100 cursor-pointer">
+                                <div className="w-40 h-24 bg-gray-200 rounded-xl"></div>
+
+                                <div className="flex-1">
+                                    <div className="font-semibold text-sm line-clamp-2">
+                                        Video title placeholder {x}
+                                    </div>
+                                    <div className="text-xs text-gray-500 mt-1">
+                                        Channel Name
+                                    </div>
+                                    <div className="text-xs text-gray-500">
+                                        120K views • 2 days ago
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
         </div>
     )
 };

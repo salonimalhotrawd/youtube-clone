@@ -1,42 +1,59 @@
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const SideBar = () => {
     const isMenuOpen = useSelector((store) => store.app.isHamburgerMenuOpen);
 
-    //Early return Pattern
-    if(!isMenuOpen) return null;
+    if (!isMenuOpen) return null;
+
+    const linkClass =
+        "px-3 py-2 rounded-lg hover:bg-gray-100 transition duration-200 cursor-pointer";
+
+    const activeClass = "bg-gray-200 font-semibold";
 
     return (
-        <div className="p-5 shadow-lg w-48">
-            <ul>
+        <aside className="w-56 shrink-0 bg-white h-full overflow-y-auto border-r hide-scrollbar px-3 py-4">
+
+            {/* MAIN */}
+            <ul className="space-y-2 text-sm mt-2">
                 <li>
-                    <Link to="/">Home</Link>
+                    <NavLink
+                        to="/"
+                        className={({ isActive }) =>
+                            `${linkClass} ${isActive ? activeClass : ""}`
+                        }
+                    >
+                        Home
+                    </NavLink>
                 </li>
-                <li>Shorts</li>
-                <li>Videos</li>
-                <li>Live</li>
+
+                <li className={linkClass}>Shorts</li>
+                <li className={linkClass}>Videos</li>
+                <li className={linkClass}>Live</li>
             </ul>
 
-            <h1 className="font-bold pt-5">Subscriptions</h1>
-            <ul>
-                <li>Music</li>
-                <li>Sports</li>
-                <li>Gaming</li>
-                <li>Movies</li>
-                <li>Bhajan</li>
+            <hr className="my-4" />
+
+            {/* SUBSCRIPTIONS */}
+            <h1 className="font-bold text-sm px-3 mb-2">Subscriptions</h1>
+            <ul className="space-y-1 text-sm">
+                <li className={linkClass}>Music</li>
+                <li className={linkClass}>Movies</li>
+                <li className={linkClass}>Gaming</li>
             </ul>
 
-            <h1 className="font-bold pt-5">Watch Later</h1>
-            <ul>
-                <li>Music</li>
-                <li>Sports</li>
-                <li>Gaming</li>
-                <li>Movies</li>
-                <li>Bhajan</li>
+            <hr className="my-4" />
+
+            {/* WATCH LATER */}
+            <h1 className="font-bold text-sm px-3 mb-2">Watch Later</h1>
+            <ul className="space-y-1 text-sm">
+                <li className={linkClass}>Bhajan</li>
+                <li className={linkClass}>Sports</li>
+                <li className={linkClass}>Gaming</li>
             </ul>
-        </div>
-    )
-}
+
+        </aside>
+    );
+};
 
 export default SideBar;
