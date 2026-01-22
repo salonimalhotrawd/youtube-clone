@@ -41,4 +41,4 @@ export const GET_ALL_COMMENTS_ON_VIDEO_BY_ID = "https://youtube.googleapis.com/y
 
 export const YOUTUBE_RECOMMENDED_BY_TITLE = "https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=15&type=video&q=";
 
-
+export const YOUTUBE_SEARCH_RECOMMENDATION_BY_QUERY = "https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=";
