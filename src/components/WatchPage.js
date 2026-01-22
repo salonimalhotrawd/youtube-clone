@@ -5,6 +5,7 @@ import { fetchRecommendVideosList, fetchVideoById } from "../services/youtubeApi
 import ErrorHandler from "./ErrorHandler";
 import ShimmerWatchPage from "./ShimmerWatchPage";
 import RecommendVideo from "./RecommendVideo";
+import CommentsGrid from "./CommentsGrid";
 
 const WatchPage = () => {
     const [seacrhParams] = useSearchParams();
@@ -106,6 +107,11 @@ const WatchPage = () => {
                                 Save
                             </button>
                         </div>
+                    </div>
+
+                    {/* Comments */}
+                    <div className="mt-6">
+                        <CommentsGrid />
                     </div>
 
                 </div>

@@ -1,35 +1,3 @@
-export const BUTTON_LIST = [
-    {
-        id: 1,
-        name: 'All'
-    },
-    {
-        id: 2,
-        name: 'Music'
-    },
-    {
-        id: 3,
-        name: 'Live'
-    },
-    {
-        id: 4,
-        name: 'Mantras'
-    }, {
-        id: 5,
-        name: 'Mixes'
-    },
-    {
-        id: 6,
-        name: 'Podcasts'
-    }, {
-        id: 7,
-        name: 'T-series'
-    },
-    {
-        id: 8,
-        name: 'Jukebox'
-    }
-]
 
 export const YOUTUBE_API_KEY = "AIzaSyB5nmgR4sY1kZ7KVXTwaINA_0urrDGAu-4";
 

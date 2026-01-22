@@ -1,5 +1,5 @@
 import Button from "./Button";
-import { BUTTON_LIST } from '../utils/apiConstants';
+import { BUTTON_LIST } from '../utils/staticDataConstants';
 
 const ButtonList = () => {
   return (
