@@ -11,7 +11,7 @@ import CommentsGrid from "./CommentsGrid";
 const WatchPage = () => {
     const [seacrhParams] = useSearchParams();
 
-    const [videoData, setVideoData] = useState(null);
+    const [videoData, setVideoData] = useState();
     const [recommendVideoData, setRecommendVideoData] = useState([]);
 
     const [loading, setLoading] = useState(true);
