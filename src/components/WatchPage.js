@@ -5,6 +5,7 @@ import { fetchRecommendVideosList, fetchVideoById } from "../services/youtubeApi
 import ErrorHandler from "./ErrorHandler";
 import ShimmerWatchPage from "./ShimmerWatchPage";
 import RecommendVideo from "./RecommendVideo";
+import LiveChat from "./LiveChat";
 import CommentsGrid from "./CommentsGrid";
 
 const WatchPage = () => {
@@ -17,6 +18,7 @@ const WatchPage = () => {
     const [error, setError] = useState("");
 
     const videoId = seacrhParams.get("v");
+    const isAd = seacrhParams.get("ad") === "true";
 
     useEffect(() => {
         if (!videoId) return null;
@@ -119,12 +121,17 @@ const WatchPage = () => {
 
                 {/* RIGHT SIDE */}
                 <div className="w-[30%]">
-                    <div className="font-semibold mb-3">Recommended</div>
-                    <div className="space-y-3">
-                        {recommendVideoData?.map((rcvd) => (
-                            <RecommendVideo key={rcvd?.id?.videoId} data={rcvd} />
-                        ))}
-                    </div>
+                    {isAd ? <LiveChat /> : (
+                        <>
+                            <div className="font-semibold mb-3">Recommended</div>
+
+                            <div className="space-y-3">
+                                {recommendVideoData?.map((rcvd) => (
+                                    <RecommendVideo key={rcvd?.id?.videoId} data={rcvd} />
+                                ))}
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
         </div>

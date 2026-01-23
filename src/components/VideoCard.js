@@ -1,5 +1,5 @@
 
-const VideoCard = ({ data }) => {
+const VideoCard = ({ data, isAd= false }) => {
     const { id, snippet } = data;
     const { thumbnails, description, publishedAt, localized, channelTitle, title } = snippet;
     return (
@@ -7,8 +7,19 @@ const VideoCard = ({ data }) => {
                  rounded-2xl shadow-lg 
                  transition-all duration-300 
                  hover:-translate-y-1 hover:shadow-xl">
-            <div className="w-full aspect-video rounded-lg overflow-hidden">
-                <img className="w-full h-full object-cover" src={thumbnails?.high?.url} alt={channelTitle} />
+            <div className="relative w-full aspect-video rounded-lg overflow-hidden">
+                <img
+                    className="w-full h-full object-cover"
+                    src={thumbnails?.high?.url}
+                    alt={channelTitle}
+                />
+
+                {/* ✅ TOP-RIGHT BADGE */}
+                {isAd && (
+                    <span className="absolute top-2 right-2 bg-black/70 text-white text-sm px-2 py-1 rounded">
+                       ↗️ Ad
+                    </span>
+                )}
             </div>
 
             <ul className="mt-2 space-y-1">
@@ -19,5 +30,11 @@ const VideoCard = ({ data }) => {
     )
 };
 
+
+export const AdVideoCard = ({ data }) => {
+    return (
+        <VideoCard data={data} isAd={true} />
+    )
+}
 
 export default VideoCard;
